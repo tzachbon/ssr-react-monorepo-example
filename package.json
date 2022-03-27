@@ -8,9 +8,23 @@
   "scripts": {
     "clean": "rimraf ./packages/*/dist",
     "build": "tsc --build",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:app": "npm run build -w app",
+    "prestart:server": "npm run build && npm run build:app",
+    "prestart:app": "npm run build",
+    "start:server": "npm start -w server",
+    "start:app": "npm start -w app"
   },
-  "keywords": [],
+  "keywords": [
+    "ssr",
+    "react",
+    "react-ssr",
+    "server-side-rendering",
+    "webpack",
+    "typescript",
+    "nodejs",
+    "monorepo"
+  ],
   "author": {
     "email": "tzachbonfil@gmail.com",
     "name": "tzachbon",
