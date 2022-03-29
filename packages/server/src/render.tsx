@@ -2,17 +2,24 @@ import ReactDOMServer from 'react-dom/server';
 import { App } from 'app';
 import fs from 'fs';
 import path from 'path';
+import type { Request, Response } from 'express';
 
-export async function render(appRootPath: string) {
-  const renderedApp = ReactDOMServer.renderToString(<App text="ssr" />);
-  const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
+export async function render(appRootPath: string, _request: Request, response: Response) {
+  try {
+    const renderedApp = ReactDOMServer.renderToString(<App text="ssr" />);
+    const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
 
-  return injectScripts(html).replace(
-    '<div id="root"></div>',
-    `
-   <div id="root" data-ssr>${renderedApp}</div>
-  `
-  );
+    return response.status(200).send(
+      injectScripts(html).replace(
+        '<div id="root"></div>',
+        `
+      <div id="root" data-ssr>${renderedApp}</div>
+      `
+      )
+    );
+  } catch (error) {
+    return response.status(500).send(error instanceof Error ? error.message : error);
+  }
 }
 
 function injectScripts(html: string) {

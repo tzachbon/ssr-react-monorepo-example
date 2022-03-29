@@ -24,7 +24,7 @@ function renderApp(app: Express) {
   /**
    * Expose the rendered App from any path that is not resolved (as SPA application).
    */
-  app.get('*', async (_req, res) => res.send(await render(appRoot)));
+  app.get('*', (req, res) => render(appRoot, req, res));
 
   return app;
 }
