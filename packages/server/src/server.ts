@@ -13,7 +13,7 @@ export function createHttpServer() {
 }
 
 function expose(app: Express) {
-  app.use(express.static(appRoot)); // Expose the App content to resolve its requests
+  app.use(express.static(appRoot, { index: false })); // Expose the App content to resolve its requests
   app.use('/react', express.static(path.dirname(require.resolve('react/package.json')))); // Expose react package
   app.use('/react-dom', express.static(path.dirname(require.resolve('react-dom/package.json')))); // Expose react-dom package
 
