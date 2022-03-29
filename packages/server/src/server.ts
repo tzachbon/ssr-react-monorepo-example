@@ -8,9 +8,8 @@ export function createHttpServer() {
   const app = express();
 
   expose(app);
-  renderApp(app);
 
-  return app;
+  return renderApp(app);
 }
 
 function expose(app: Express) {
