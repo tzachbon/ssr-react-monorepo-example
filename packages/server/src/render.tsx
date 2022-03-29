@@ -76,7 +76,7 @@ async function* renderChunks(html: string) {
       yield chunk.toString();
     }
   } catch (errorOrAbort) {
-    if ((errorOrAbort as Error)?.name !== 'AbortError') {
+    if (!abortController.signal.aborted) {
       throw errorOrAbort; // It's an error.
     }
   }
