@@ -1,6 +1,8 @@
 import { createHttpServer } from './server';
 
-const port = process.env.PORT || 5050;
+const [preferredPort = 5050] = process.argv.slice(2);
+
+const port = process.env.PORT || preferredPort;
 
 createHttpServer().listen(port, () => {
   console.log('Server is running on port: ', port);
