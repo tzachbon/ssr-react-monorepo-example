@@ -1,6 +1,7 @@
 import expect from 'expect';
 import { ProjectRunner } from 'e2e-test-kit';
 import { dirname } from 'path';
+import { after, afterEach, before } from 'mocha';
 
 describe('Client', () => {
   const { runner } = ProjectRunner.create({
@@ -9,7 +10,7 @@ describe('Client', () => {
     },
     path: dirname(require.resolve('app')),
     isClientOnly: true,
-  }).beforeAndAfter();
+  }).beforeAndAfter({ after, afterEach, before });
 
   it('should render client project', async () => {
     const { page } = await runner.openPage(runner.baseUrl());

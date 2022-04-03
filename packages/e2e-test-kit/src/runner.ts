@@ -1,8 +1,18 @@
 import { fork } from 'child_process';
-import { after, afterEach, before } from 'mocha';
+import {
+  after as mochaAfter,
+  afterEach as mochaAfterEach,
+  before as mochaBefore,
+  type HookFunction as MochaHook,
+} from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
 import { serve } from './serve';
 
+interface TestHooks {
+  after?: MochaHook;
+  afterEach?: MochaHook;
+  before?: MochaHook;
+}
 interface ProjectRunnerOptions {
   launchOptions?: LaunchOptions;
   timeout?: number;
@@ -32,7 +42,7 @@ export class ProjectRunner {
       beforeAndAfter,
     };
 
-    function beforeAndAfter() {
+    function beforeAndAfter({ after = mochaAfter, afterEach = mochaAfterEach, before = mochaBefore }: TestHooks = {}) {
       before('bundle and serve project', async function () {
         this.timeout(runnerOptions.timeout!);
 
