@@ -1,6 +1,8 @@
 import express from 'express';
+import { safeListeningHttpServer } from 'create-listening-server';
 
-const [outputPath, port] = process.argv.slice(2);
+const [outputPath, preferredPort] = process.argv.slice(2);
+const port = Number(preferredPort || 8080);
 
 const app = express();
 
@@ -12,4 +14,10 @@ app.use(
     lastModified: false,
   })
 );
-app.listen(port);
+
+safeListeningHttpServer(port, app)
+  .then(({ port }) => process.send!({ port }))
+  .catch((e) => {
+    console.error(e);
+    process.exitCode = 1;
+  });

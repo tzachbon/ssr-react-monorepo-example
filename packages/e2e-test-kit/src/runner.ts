@@ -1,4 +1,3 @@
-import { fork } from 'child_process';
 import {
   after as mochaAfter,
   afterEach as mochaAfterEach,
@@ -6,7 +5,7 @@ import {
   type HookFunction as MochaHook,
 } from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
-import { serve } from './serve';
+import { runService, serve } from './serve';
 
 interface TestHooks {
   after?: MochaHook;
@@ -67,19 +66,12 @@ export class ProjectRunner {
 
   public async run() {
     const pathToServe = this.options.path;
-    const getPort = (await dynamicImport<typeof import('get-port')>('get-port')).default;
-    this.port = await getPort({ port: this.port });
+    const { close, port } = await (this.options.isClientOnly
+      ? serve(pathToServe, this.port)
+      : runService(pathToServe, this.port));
 
-    if (this.options.isClientOnly) {
-      const server = await serve(pathToServe, this.port);
-      this.destroyCallbacks.add(() => server.close());
-    } else {
-      const childProcess = fork(pathToServe, [this.port.toString()], {
-        stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
-      });
-
-      this.destroyCallbacks.add(() => childProcess.kill());
-    }
+    this.port = port;
+    this.destroyCallbacks.add(() => close());
 
     await this.createBrowser();
   }
@@ -124,9 +116,4 @@ export class ProjectRunner {
       }
     }
   }
-}
-
-// TODO: remove this when typescript support "module": "node12" and replace with dynamic import
-function dynamicImport<J>(request: string) {
-  return Function(`return import("${request}")`)() as Promise<J>;
 }
