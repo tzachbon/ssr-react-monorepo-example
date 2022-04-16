@@ -1,16 +1,12 @@
-import ReactDOM from 'react-dom';
+import ReactDOMClient from 'react-dom/client';
 import { App } from './app';
 
 const container = globalThis.document?.getElementById('root')!;
 
 if (container) {
-  initialApp();
-}
-
-function initialApp() {
   if (container.hasAttribute('data-ssr')) {
-    ReactDOM.hydrate(<App text="Hello World (hydrated)" />, container);
+    ReactDOMClient.hydrateRoot(container, <App text="Hello World (hydrated)" />);
   } else {
-    ReactDOM.render(<App text="Hello World (client-only)" />, container);
+    ReactDOMClient.createRoot(container).render(<App text="Hello World (client-only)" />);
   }
 }
