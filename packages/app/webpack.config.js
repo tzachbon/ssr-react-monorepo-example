@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rootWebpackConfig = require('../../webpack.config');
 const packageJSON = require('./package.json');
 
-/** @type import('webpack').Configuration */
-module.exports = {
+/** @type {(webpack: import('webpack').Configuration) => import('webpack').Configuration} */
+module.exports = (w) => ({
   ...rootWebpackConfig,
   entry: {
     client: require.resolve('./src/client.tsx'),
@@ -34,9 +34,13 @@ module.exports = {
   plugins: [
     ...(rootWebpackConfig.plugins ?? []),
     new HtmlWebpackPlugin({
+      cache: w.mode === 'production',
       template: require.resolve('./src/html.ejs'),
       hash: true,
       excludeChunks: ['index'],
+      minify: {
+        removeComments: false,
+      },
       templateParameters: {
         dependencies: {
           ...packageJSON.dependencies,
@@ -44,4 +48,4 @@ module.exports = {
       },
     }),
   ],
-};
+});

@@ -6,7 +6,8 @@ import { after, afterEach, before } from 'mocha';
 describe('Server Headers', () => {
   const { runner } = ProjectRunner.create({
     launchOptions: {
-      // headless: false,
+      headless: false,
+      devtools: true,
     },
     path: dirname(require.resolve('server')),
   }).beforeAndAfter({ after, afterEach, before });

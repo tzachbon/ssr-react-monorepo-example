@@ -11,9 +11,11 @@ export async function render(appRootPath: string, _request: Request, response: R
 
     const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
 
-    for await (const chunk of renderChunks(html)) {
+    for await (const { chunk, shouldFlush } of renderChunks(html)) {
       response.write(chunk);
-      response.flush();
+      if (shouldFlush) {
+        response.flush();
+      }
     }
 
     return response.status(200).end();
@@ -27,7 +29,7 @@ function injectScripts(html: string) {
   /**
    * Remove the "unpkg" script tag from the html.
    */
-  html = html.replace(new RegExp(`<script crossorigin src="https://unpkg.com/(.*?)"><\/script>`, 'g'), '');
+  html = html.replace(/(\<\!-- Client Scripts -- start -->)([\s\S]*?)(\<\!-- Client Scripts -- end -->)/gm, '');
   for (const scriptRequest of ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js']) {
     /**
      * Add the request to the html as scripts.
@@ -42,7 +44,7 @@ function injectScripts(html: string) {
   return html;
 }
 
-async function* renderChunks(html: string) {
+async function* renderChunks(html: string): AsyncGenerator<{ chunk: string; shouldFlush: boolean }> {
   const abortController = new AbortController();
 
   html = injectScripts(html);
@@ -50,8 +52,8 @@ async function* renderChunks(html: string) {
   const stream = ReactDOMServer.renderToStaticNodeStream(<App text="ssr" />);
   const [start, end, openDiv] = [...html.split('<div id="root">'), '<div id="root" data-ssr>'];
 
-  yield start;
-  yield openDiv;
+  yield { chunk: start, shouldFlush: false };
+  yield { chunk: openDiv, shouldFlush: true };
 
   stream.on('end', () => {
     abortController.abort('Finished rendering');
@@ -59,7 +61,7 @@ async function* renderChunks(html: string) {
 
   try {
     for await (const chunk of on(stream, 'data', { signal: abortController.signal })) {
-      yield chunk.toString();
+      yield { chunk: chunk.toString(), shouldFlush: false };
     }
   } catch (errorOrAbort) {
     if (!abortController.signal.aborted) {
@@ -67,5 +69,5 @@ async function* renderChunks(html: string) {
     }
   }
 
-  yield end;
+  yield { chunk: end, shouldFlush: true };
 }
