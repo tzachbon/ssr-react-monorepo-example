@@ -5,12 +5,15 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "start": "node --enable-source-maps dist/src/index.js"
+    "start": "node --enable-source-maps dist/src/index.js",
+    "dev": "ENV=development nodemon ./src/index.ts --watch src -e ts,tsx"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/compression": "^1.7.2",
+    "compression": "^1.7.4",
     "create-listening-server": "^1.0.0",
     "express": "^4.17.3"
   }

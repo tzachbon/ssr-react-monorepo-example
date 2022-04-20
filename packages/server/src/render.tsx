@@ -8,13 +8,12 @@ import { on } from 'events';
 export async function render(appRootPath: string, _request: Request, response: Response) {
   try {
     response.setHeader('Content-Type', 'text/html; charset=utf-8');
-    response.setHeader('Transfer-Encoding', 'chunked');
 
-    const { writeStream } = createStreamAsync(response);
     const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
 
     for await (const chunk of renderChunks(html)) {
-      await writeStream(chunk);
+      response.write(chunk);
+      response.flush();
     }
 
     return response.status(200).end();
@@ -28,8 +27,7 @@ function injectScripts(html: string) {
   /**
    * Remove the "unpkg" script tag from the html.
    */
-  html = html.replace(new RegExp(`<script src="https://unpkg.com/(.*?)"><\/script>`, 'g'), '');
-
+  html = html.replace(new RegExp(`<script crossorigin src="https://unpkg.com/(.*?)"><\/script>`, 'g'), '');
   for (const scriptRequest of ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js']) {
     /**
      * Add the request to the html as scripts.
@@ -37,23 +35,11 @@ function injectScripts(html: string) {
     html = html.replace('</head>', `<script src="${scriptRequest}"></script></head>`);
   }
 
-  return html;
-}
-
-function createStreamAsync(response: Response) {
-  function writeStream<T>(chunk: T) {
-    return new Promise((res, rej) => {
-      response.write(chunk, (error) => {
-        if (error) {
-          rej(error);
-        } else {
-          res(chunk);
-        }
-      });
-    });
+  if (process.env.ENV === 'development') {
+    html = html.replace(/production.min/g, 'development');
   }
 
-  return { writeStream };
+  return html;
 }
 
 async function* renderChunks(html: string) {
@@ -81,5 +67,5 @@ async function* renderChunks(html: string) {
     }
   }
 
-  return end;
+  yield end;
 }
