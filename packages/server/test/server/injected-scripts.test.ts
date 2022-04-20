@@ -3,7 +3,7 @@ import { ProjectRunner } from 'e2e-test-kit';
 import { dirname } from 'path';
 import { after, afterEach, before } from 'mocha';
 
-describe('Server', () => {
+describe('Server Headers', () => {
   const { runner } = ProjectRunner.create({
     launchOptions: {
       // headless: false,
