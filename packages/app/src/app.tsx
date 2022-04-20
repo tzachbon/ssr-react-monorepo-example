@@ -4,4 +4,4 @@ export interface AppProps {
   text: string;
 }
 
-export const App: React.VFC<AppProps> = ({ text }) => <h1>{text}</h1>;
+export const App: React.FC<AppProps> = ({ text }) => <h1 suppressHydrationWarning>{text}</h1>;

@@ -7,7 +7,11 @@ const port = Number(process.env.PORT || preferredPort);
 
 const app = createHttpServer();
 safeListeningHttpServer(port, app)
-  .then(({ port }) => process.send!({ port }))
+  .then(({ port }) => {
+    process.send?.({ port });
+
+    console.log(`Listening on port ${port}`);
+  })
   .catch((e) => {
     console.error(e);
     process.exitCode = 1;

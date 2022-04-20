@@ -1,11 +1,14 @@
 import express, { Express } from 'express';
 import path from 'path';
+import compression from 'compression';
 import { render } from './render';
 
 const appRoot = path.dirname(require.resolve('app'));
 
 export function createHttpServer() {
   const app = express();
+
+  app.use(compression());
 
   expose(app);
 
