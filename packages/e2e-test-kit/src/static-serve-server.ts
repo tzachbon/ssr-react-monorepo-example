@@ -1,5 +1,5 @@
 import express from 'express';
-import { safeListeningHttpServer } from 'create-listening-server';
+import { createListeningHttpServer } from 'create-listening-server';
 
 const [outputPath, preferredPort] = process.argv.slice(2);
 const port = Number(preferredPort || 8080);
@@ -15,8 +15,11 @@ app.use(
   })
 );
 
-safeListeningHttpServer(port, app)
-  .then(({ port }) => process.send!({ port }))
+createListeningHttpServer(port, app)
+  .then(() => {
+    process.send?.({ port });
+    console.log(`Listening on port ${port}`);
+  })
   .catch((e) => {
     console.error(e);
     process.exitCode = 1;
