@@ -22,12 +22,11 @@ export class LocalPortManager {
   public async ensurePort() {
     const preferredPort = this.getPort();
     const { port, httpServer } = await safeListeningHttpServer(preferredPort);
-
-    await new Promise((resolve, reject) => httpServer.close((error) => (error ? reject(error) : resolve(void 0))));
-
     if (port !== preferredPort) {
       this.setPort(port);
     }
+
+    await new Promise((resolve, reject) => httpServer.close((error) => (error ? reject(error) : resolve(void 0))));
 
     return port;
   }
@@ -50,10 +49,6 @@ export class LocalPortManager {
   }
 
   public setPort(port: number) {
-    if (!port) {
-      return;
-    }
-
     this.visitedPorts.add(port);
     this.updatePersistentPorts((ports) => {
       ports.add(port);
