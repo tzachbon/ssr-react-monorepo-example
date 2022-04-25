@@ -22,6 +22,7 @@ export class LocalPortManager {
   public async ensurePort() {
     const preferredPort = this.getPort();
     const { port, httpServer } = await safeListeningHttpServer(preferredPort);
+
     if (port !== preferredPort) {
       this.setPort(port);
     }
@@ -61,11 +62,15 @@ export class LocalPortManager {
   }
 
   private getNextPort(): number {
-    let port = this.start;
+    const maxIterations = this.end - this.start;
+    let iteration = 0;
+    let port = randomNumberBetween(this.start, this.end);
+
     while (this.getPersistentPorts().has(port)) {
-      port++;
-      if (port > this.end) {
-        port = this.start;
+      port = randomNumberBetween(this.start, this.end);
+
+      if (++iteration > maxIterations) {
+        throw new Error(`Could not find a free port between ${this.start} and ${this.end}`);
       }
     }
 
@@ -99,4 +104,8 @@ export class LocalPortManager {
     const ports = new Set(nodeFs.readdirSync(this.portsPath).map(Number));
     return ports;
   }
+}
+
+function randomNumberBetween(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
