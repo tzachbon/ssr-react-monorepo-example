@@ -1,15 +1,14 @@
 import { createHttpServer } from './server';
-import { safeListeningHttpServer } from 'create-listening-server';
+import { createListeningHttpServer } from 'create-listening-server';
 
 const [preferredPort = 5050] = process.argv.slice(2);
 
 const port = Number(process.env.PORT || preferredPort);
 
 const app = createHttpServer();
-safeListeningHttpServer(port, app)
-  .then(({ port }) => {
+createListeningHttpServer(port, app)
+  .then(() => {
     process.send?.({ port });
-
     console.log(`Listening on port ${port}`);
   })
   .catch((e) => {

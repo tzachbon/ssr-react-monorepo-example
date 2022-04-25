@@ -5,6 +5,7 @@ import {
   type HookFunction as MochaHook,
 } from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
+import { LocalPortManager } from './local-port-manager';
 import { runService, serve } from './serve';
 
 interface TestHooks {
@@ -23,8 +24,8 @@ export class ProjectRunner {
   private destroyCallbacks = new Set<() => void>();
   private browser: Browser | undefined;
   private browserContexts: playwright.BrowserContext[] = [];
-
-  public port: number = 8080;
+  private portManager = new LocalPortManager(9000, 8000);
+  public port: number | undefined;
 
   private constructor(private options: ProjectRunnerOptions) {}
 
@@ -50,6 +51,8 @@ export class ProjectRunner {
 
       afterEach('cleanup open pages', async () => {
         await runner.closeAllPages();
+
+        runner.portManager.releasePorts();
       });
 
       after('destroy runner', async () => {
@@ -61,16 +64,21 @@ export class ProjectRunner {
   }
 
   public baseUrl() {
+    if (!this.port) {
+      throw new Error('Cannot get base url before runner is started');
+    }
+
     return `http://localhost:${this.port}`;
   }
 
   public async run() {
+    this.port = await this.portManager.ensurePort();
+
     const pathToServe = this.options.path;
-    const { close, port } = await (this.options.isClientOnly
+    const { close } = await (this.options.isClientOnly
       ? serve(pathToServe, this.port)
       : runService(pathToServe, this.port));
 
-    this.port = port;
     this.destroyCallbacks.add(() => close());
 
     await this.createBrowser();
