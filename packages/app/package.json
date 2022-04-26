@@ -13,7 +13,7 @@
     "bundle:prod": "webpack --mode production",
     "bundle:dev": "webpack --mode development --devtool source-map",
     "start": "webpack serve --mode development --open",
-    "prepack": "npm run build"
+    "prepack": "npx tsc && npm run build"
   },
   "keywords": [],
   "author": "",

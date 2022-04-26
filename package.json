@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "dev": "npm run build -- -w --preserveWatchOutput",
-    "dev:app": "run-p -dev start:app",
+    "dev:app": "run-p dev start:app",
     "dev:server": "run-p dev dev:server:watch dev:app:bundle",
     "clean": "rimraf ./packages/*/dist",
     "build": "tsc --build",
