@@ -10,20 +10,12 @@ module.exports = {
         loader: 'source-map-loader',
       },
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          projectReferences: true,
-          configFile: require.resolve('./tsconfig.json'),
-        },
-      },
-      {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
         type: 'asset',
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.js', '.json'],
   },
 };
