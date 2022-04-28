@@ -2,11 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/server/index.js",
+  "types": "dist/server/index.d.ts",
   "scripts": {
-    "start": "node --enable-source-maps dist/src/index.js",
-    "dev": "ENV=development nodemon --enable-source-maps ./dist/src/index.js --watch dist/src"
+    "start": "node --enable-source-maps dist/server/index.js",
+    "dev": "ENV=development nodemon --enable-source-maps ./dist/server/index.js --watch dist/server"
   },
   "keywords": [],
   "author": "",

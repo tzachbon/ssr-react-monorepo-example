@@ -2,7 +2,7 @@ import { fork, spawn } from 'child_process';
 import { getPortFromChildProcess } from './helper';
 
 export async function serve(directory: string, preferredPort = 8080) {
-  const args = [require.resolve('e2e-test-kit/dist/src/static-serve-server'), directory, preferredPort.toString()];
+  const args = [require.resolve('e2e-test-kit/static-serve-server'), directory, preferredPort.toString()];
   const child = spawn('node', args, {
     stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
   });

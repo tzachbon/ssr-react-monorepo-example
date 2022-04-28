@@ -1,4 +1,10 @@
 {
   "files": [],
-  "references": [{ "path": "./packages/app" }, { "path": "./packages/server" }, { "path": "./packages/e2e-test-kit" }]
+  "references": [
+    { "path": "./packages/app/src" },
+    { "path": "./packages/app/test" },
+    { "path": "./packages/server/src" },
+    { "path": "./packages/server/test" },
+    { "path": "./packages/e2e-test-kit/src" }
+  ]
 }
