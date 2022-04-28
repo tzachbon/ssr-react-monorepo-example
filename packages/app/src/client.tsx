@@ -1,7 +1,7 @@
 import ReactDOMClient from 'react-dom/client';
 import { App } from './app';
 
-const container = globalThis.document?.getElementById('root')!;
+const container = globalThis.document?.getElementById('root');
 
 if (container) {
   if (container.hasAttribute('data-ssr')) {

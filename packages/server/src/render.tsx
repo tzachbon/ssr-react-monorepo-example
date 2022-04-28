@@ -7,7 +7,11 @@ import { on } from 'events';
 
 export async function render(appRootPath: string, _request: Request, response: Response) {
   try {
-    response.setHeader('Content-Type', 'text/html; charset=utf-8');
+    response.writeHead(200, {
+      'Content-Type': 'text/html',
+      'content-transfer-encoding': 'chunked',
+      'x-content-type-options': 'nosniff',
+    });
 
     const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
 
@@ -18,7 +22,7 @@ export async function render(appRootPath: string, _request: Request, response: R
       }
     }
 
-    return response.status(200).end();
+    return response.end();
   } catch (error) {
     console.error(error);
     return response.status(500).send(error instanceof Error ? error.message : error);
@@ -29,7 +33,7 @@ function injectScripts(html: string) {
   /**
    * Remove the "unpkg" script tag from the html.
    */
-  html = html.replace(/(\<\!-- Client Scripts -- start -->)([\s\S]*?)(\<\!-- Client Scripts -- end -->)/gm, '');
+  html = html.replace(/(<!-- Client Scripts -- start -->)([\s\S]*?)(<!-- Client Scripts -- end -->)/gm, '');
   for (const scriptRequest of ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js']) {
     /**
      * Add the request to the html as scripts.
@@ -61,7 +65,7 @@ async function* renderChunks(html: string): AsyncGenerator<{ chunk: string; shou
 
   try {
     for await (const chunk of on(stream, 'data', { signal: abortController.signal })) {
-      yield { chunk: chunk.toString(), shouldFlush: false };
+      yield { chunk: String(chunk), shouldFlush: false };
     }
   } catch (errorOrAbort) {
     if (!abortController.signal.aborted) {

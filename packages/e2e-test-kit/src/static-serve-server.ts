@@ -6,8 +6,12 @@ const port = Number(preferredPort || 8080);
 
 const app = express();
 
+if (!outputPath) {
+  throw new Error('Missing output path');
+}
+
 app.use(
-  express.static(outputPath!, {
+  express.static(outputPath, {
     cacheControl: false,
     etag: false,
     immutable: false,
