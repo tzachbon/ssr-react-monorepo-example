@@ -33,7 +33,7 @@ function injectScripts(html: string) {
   /**
    * Remove the "unpkg" script tag from the html.
    */
-  html = html.replace(/(\<\!-- Client Scripts -- start -->)([\s\S]*?)(\<\!-- Client Scripts -- end -->)/gm, '');
+  html = html.replace(/(<!-- Client Scripts -- start -->)([\s\S]*?)(<!-- Client Scripts -- end -->)/gm, '');
   for (const scriptRequest of ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js']) {
     /**
      * Add the request to the html as scripts.
@@ -65,7 +65,7 @@ async function* renderChunks(html: string): AsyncGenerator<{ chunk: string; shou
 
   try {
     for await (const chunk of on(stream, 'data', { signal: abortController.signal })) {
-      yield { chunk: chunk.toString(), shouldFlush: false };
+      yield { chunk: String(chunk), shouldFlush: false };
     }
   } catch (errorOrAbort) {
     if (!abortController.signal.aborted) {

@@ -13,7 +13,7 @@ export async function serve(directory: string, preferredPort = 8080) {
       try {
         child.kill();
       } catch (e) {
-        console.log('Kill Server Error:' + e);
+        console.log(`Kill Server Error: ${String(e)}`);
       }
     },
   };
@@ -30,7 +30,7 @@ export async function runService(pathToServe: string, preferredPort = 8080) {
       try {
         child.kill();
       } catch (e) {
-        console.log('Kill Server Error:' + e);
+        console.log(`Kill Server Error: ${String(e)}`);
       }
     },
   };
