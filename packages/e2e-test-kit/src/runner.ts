@@ -5,8 +5,8 @@ import {
   type HookFunction as MochaHook,
 } from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
-import { LocalPortManager } from './local-port-manager';
 import { runService, serve } from './serve';
+import { Ports } from 'ensure-port';
 
 interface TestHooks {
   after?: MochaHook;
@@ -24,10 +24,15 @@ export class ProjectRunner {
   private destroyCallbacks = new Set<() => void>();
   private browser: Browser | undefined;
   private browserContexts: playwright.BrowserContext[] = [];
-  private portManager = new LocalPortManager(9000, 8000);
+  private ports: Ports;
   public port: number | undefined;
 
-  private constructor(private options: ProjectRunnerOptions) {}
+  private constructor(private options: ProjectRunnerOptions) {
+    this.ports = new Ports({
+      startPort: 8000,
+      endPort: 9000,
+    });
+  }
 
   static create(runnerOptions: ProjectRunnerOptions) {
     runnerOptions.timeout ??= 40_000;
@@ -51,12 +56,12 @@ export class ProjectRunner {
 
       afterEach('cleanup open pages', async () => {
         await runner.closeAllPages();
-
-        runner.portManager.releasePorts();
+        await runner.ports.releasePorts();
       });
 
       after('destroy runner', async () => {
         await runner.destroy();
+        await runner.ports.dispose();
       });
 
       return response;
@@ -72,7 +77,7 @@ export class ProjectRunner {
   }
 
   public async run() {
-    this.port = await this.portManager.ensurePort();
+    this.port = await this.ports.ensurePort();
 
     const pathToServe = this.options.path;
     const { close } = await (this.options.isClientOnly
