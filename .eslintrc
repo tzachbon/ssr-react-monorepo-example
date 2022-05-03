@@ -30,7 +30,7 @@
     {
       "files": ["*.ts", "*.tsx"],
       "parserOptions": {
-        "project": ["packages/*/tsconfig.json", "./tsconfig.base.json"],
+        "project": ["packages/*/tsconfig.json", "./tsconfig.base.json", "./tsconfig.json"],
         "EXPERIMENTAL_useSourceOfProjectReferenceRedirect": true
       },
       "extends": [
