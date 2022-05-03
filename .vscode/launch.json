@@ -5,11 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to Chrome",
+      "name": "Launch Chrome",
       "port": 9222,
       "request": "launch",
-      "type": "chrome",
-      "webRoot": "${workspaceFolder}/packages/app/dist/umd"
+      "type": "pwa-chrome",
+      "webRoot": "${workspaceFolder}/packages/app",
+      "inspectUri": null
     },
     {
       "type": "pwa-node",
@@ -31,7 +32,7 @@
   "compounds": [
     {
       "name": "Mocha and browser debugger",
-      "configurations": ["Attach to Chrome", "Mocha Current"],
+      "configurations": ["Launch Chrome", "Mocha Current"],
       "stopAll": true
     }
   ]
