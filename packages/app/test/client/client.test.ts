@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'expect';
 import { ProjectRunner } from 'e2e-test-kit';
 import { dirname } from 'path';
 import { after, afterEach, before } from 'mocha';

@@ -10,25 +10,12 @@ module.exports = {
         loader: 'source-map-loader',
       },
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          projectReferences: true,
-          configFile: require.resolve('./tsconfig.json'),
-          compilerOptions: {
-            // build still catches these. avoid them during bunding time for a nicer dev experience.
-            noUnusedLocals: false,
-            noUnusedParameters: false,
-          },
-        },
-      },
-      {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
         type: 'asset',
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.js', '.json'],
   },
 };
