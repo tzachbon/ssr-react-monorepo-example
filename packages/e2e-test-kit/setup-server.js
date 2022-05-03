@@ -1,2 +1,2 @@
 // @ts-check
-require('./dist/mocha-start-server');
+module.exports = require('./dist/mocha-start-server');

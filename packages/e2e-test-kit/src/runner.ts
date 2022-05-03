@@ -129,10 +129,17 @@ export class ProjectRunner {
 
   private async createBrowser() {
     if (!this.browser) {
-      try {
-        this.browser = await playwright.chromium.connectOverCDP(process.env.ENDPOINT_URL!, this.options.launchOptions);
-      } catch (error) {
-        this.browser = await playwright.chromium.launch(this.options.launchOptions);
+      if (process.env.PLAYWRIGHT_SERVER) {
+        this.browser = await playwright.chromium.connect(process.env.PLAYWRIGHT_SERVER!, this.options.launchOptions);
+      } else {
+        try {
+          this.browser = await playwright.chromium.connectOverCDP(
+            process.env.ENDPOINT_URL!,
+            this.options.launchOptions
+          );
+        } catch (error) {
+          this.browser = await playwright.chromium.launch(this.options.launchOptions);
+        }
       }
     }
   }
