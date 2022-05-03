@@ -56,7 +56,7 @@ export class ProjectRunner {
 
       afterEach('cleanup open pages', async () => {
         await runner.closeAllPages();
-        await runner.ports.releasePorts();
+        await runner.ports.release();
       });
 
       after('destroy runner', async () => {
@@ -77,7 +77,7 @@ export class ProjectRunner {
   }
 
   public async run() {
-    this.port = await this.ports.ensurePort();
+    this.port = await this.ports.ensure();
 
     const pathToServe = this.options.path;
     const { close } = await (this.options.isClientOnly
