@@ -5,8 +5,10 @@ import {
   type HookFunction as MochaHook,
 } from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
-import { runService, serve } from './serve';
 import { Ports } from 'ensure-port';
+import { runService, serve } from './serve';
+import type { IFileSystem } from '@file-services/types';
+import { nodeFs } from '@file-services/node';
 
 interface TestHooks {
   after?: MochaHook;
@@ -18,6 +20,9 @@ interface ProjectRunnerOptions {
   timeout?: number;
   isClientOnly?: boolean;
   path: string;
+  log?: boolean;
+  fs?: IFileSystem;
+  port?: number;
 }
 
 export class ProjectRunner {
@@ -25,13 +30,15 @@ export class ProjectRunner {
   private browser: Browser | undefined;
   private browserContexts: playwright.BrowserContext[] = [];
   private ports: Ports;
+  private fs: IFileSystem;
+
+  public log: (...messages: string[]) => void;
   public port: number | undefined;
 
   private constructor(private options: ProjectRunnerOptions) {
-    this.ports = new Ports({
-      startPort: 8000,
-      endPort: 9000,
-    });
+    this.fs = this.options.fs ?? nodeFs;
+    this.log = this.options.log ? console.log.bind(console, '[ProjectRunner]') : () => void 0;
+    this.ports = new Ports({ startPort: 8000, endPort: 9000 }, { fs: this.fs });
   }
 
   static create(runnerOptions: ProjectRunnerOptions) {
@@ -77,7 +84,7 @@ export class ProjectRunner {
   }
 
   public async run() {
-    this.port = await this.ports.ensure();
+    this.port = this.options.port ?? (await this.ports.ensure());
 
     const pathToServe = this.options.path;
     const { close } = await (this.options.isClientOnly
@@ -108,7 +115,7 @@ export class ProjectRunner {
     if (captureResponses) {
       page.on('response', (response) => responses.push(response));
     }
-    await page.goto(url, { waitUntil: captureResponses ? 'networkidle' : 'load' });
+    await page.goto(url, { waitUntil: 'networkidle' });
     return { page, responses };
   }
 
@@ -122,8 +129,8 @@ export class ProjectRunner {
 
   private async createBrowser() {
     if (!this.browser) {
-      if (process.env.PLAYWRIGHT_SERVER) {
-        this.browser = await playwright.chromium.connect(process.env.PLAYWRIGHT_SERVER, this.options.launchOptions);
+      if (process.env.ENDPOINT_URL) {
+        this.browser = await playwright.chromium.connectOverCDP(process.env.ENDPOINT_URL, this.options.launchOptions);
       } else {
         this.browser = await playwright.chromium.launch(this.options.launchOptions);
       }
