@@ -9,8 +9,8 @@ const packageJSON = require('./package.json');
 module.exports = (w) => ({
   ...rootWebpackConfig,
   entry: {
-    client: require.resolve('./dist/app/client.js'),
-    index: require.resolve('./dist/app/index.js'),
+    client: require.resolve('./src/client.tsx'),
+    index: require.resolve('./src/index.tsx'),
   },
   output: {
     path: path.resolve(__dirname, 'dist/umd'),
