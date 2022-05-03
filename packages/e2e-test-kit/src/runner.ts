@@ -129,9 +129,9 @@ export class ProjectRunner {
 
   private async createBrowser() {
     if (!this.browser) {
-      if (process.env.ENDPOINT_URL) {
-        this.browser = await playwright.chromium.connectOverCDP(process.env.ENDPOINT_URL, this.options.launchOptions);
-      } else {
+      try {
+        this.browser = await playwright.chromium.connectOverCDP(process.env.ENDPOINT_URL!, this.options.launchOptions);
+      } catch (error) {
         this.browser = await playwright.chromium.launch(this.options.launchOptions);
       }
     }

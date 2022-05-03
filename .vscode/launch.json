@@ -5,26 +5,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "name": "Attach to Chrome",
+      "port": 9222,
       "request": "launch",
-      "name": "Launch Program",
-      "program": "",
-      "args": ["${file}"]
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}/packages/app/dist/umd"
     },
     {
       "type": "pwa-node",
       "request": "launch",
       "name": "Mocha Current",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": ["--timeout", "999999", "packages/*/dist/**/${fileBasenameNoExtension}.js"],
+      "args": ["--timeout", "999999", "packages/**/dist/test/**/${fileBasenameNoExtension}.js"],
       "runtimeArgs": ["--enable-source-maps"],
       "preLaunchTask": "npm: build:all",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**"],
       "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
       "env": {
-        "FILE": "${file}"
+        "FILE": "${file}",
+        "ENDPOINT_URL": "http://localhost:9222/"
       }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Mocha and browser debugger",
+      "configurations": ["Attach to Chrome", "Mocha Current"],
+      "stopAll": true
     }
   ]
 }
