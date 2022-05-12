@@ -5,17 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Chrome",
-      "port": 9222,
-      "request": "launch",
-      "type": "pwa-chrome",
-      "webRoot": "${workspaceFolder}/packages/app",
-      "inspectUri": null
-    },
-    {
       "type": "pwa-node",
       "request": "launch",
-      "name": "Mocha Current",
+      "name": "Run Current Test File",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": ["--timeout", "999999", "packages/**/dist/test/**/${fileBasenameNoExtension}.js"],
       "runtimeArgs": ["--enable-source-maps"],
@@ -27,12 +19,20 @@
         "FILE": "${file}",
         "ENDPOINT_URL": "http://localhost:9222/"
       }
+    },
+    {
+      "name": "Launch Chrome",
+      "port": 9222,
+      "request": "launch",
+      "type": "pwa-chrome",
+      "webRoot": "${workspaceFolder}/packages/app",
+      "inspectUri": null
     }
   ],
   "compounds": [
     {
-      "name": "Mocha and browser debugger",
-      "configurations": ["Launch Chrome", "Mocha Current"],
+      "name": "Debug Test and Source Code",
+      "configurations": ["Launch Chrome", "Run Current Test File"],
       "stopAll": true
     }
   ]
