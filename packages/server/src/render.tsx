@@ -1,11 +1,22 @@
 import ReactDOMServer from 'react-dom/server';
+import type { Express } from 'express';
 import { App } from 'app';
 import fs from 'fs';
 import path from 'path';
 import type { Request, Response } from 'express';
 import { on } from 'events';
+import { appRootPath } from './consts';
 
-export async function render(appRootPath: string, _request: Request, response: Response) {
+export function createAppRenderer(app: Express) {
+  /**
+   * Expose the rendered App from any path that is not resolved (as SPA application).
+   */
+  app.get('*', (req, res) => {
+    void render(appRootPath, req, res);
+  });
+}
+
+async function render(appRootPath: string, _request: Request, response: Response) {
   try {
     response.writeHead(200, {
       'Content-Type': 'text/html',

@@ -1,9 +1,9 @@
 import express, { Express } from 'express';
-import path from 'path';
 import compression from 'compression';
-import { render } from './render';
-
-const appRoot = path.dirname(require.resolve('app'));
+import { createRestAPI } from './api';
+import { createScripts } from './scripts';
+import { createAppRenderer } from './render';
+import { appRootPath } from './consts';
 
 export function createHttpServer() {
   const app = express();
@@ -12,24 +12,13 @@ export function createHttpServer() {
 
   expose(app);
 
-  return renderApp(app);
+  return app;
 }
 
 function expose(app: Express) {
-  app.use(express.static(appRoot, { index: false })); // Expose the App content to resolve its requests
-  app.use('/react', express.static(path.dirname(require.resolve('react/package.json')))); // Expose react package
-  app.use('/react-dom', express.static(path.dirname(require.resolve('react-dom/package.json')))); // Expose react-dom package
+  app.use(express.static(appRootPath, { index: false })); // Expose the App content to resolve its requests
 
-  return app;
-}
-
-function renderApp(app: Express) {
-  /**
-   * Expose the rendered App from any path that is not resolved (as SPA application).
-   */
-  app.get('*', (req, res) => {
-    void render(appRoot, req, res);
-  });
-
-  return app;
+  createScripts(app);
+  createRestAPI(app);
+  createAppRenderer(app);
 }
