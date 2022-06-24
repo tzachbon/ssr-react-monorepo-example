@@ -10,5 +10,5 @@ export const App: React.FC<AppProps> = ({ text }) => {
     console.log('hello from client!');
   }, []);
 
-  return <h1 suppressHydrationWarning>{text}</h1>;
+  return <h1>{text}</h1>;
 };

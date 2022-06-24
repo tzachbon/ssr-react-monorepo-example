@@ -64,7 +64,7 @@ async function* renderChunks(html: string): AsyncGenerator<{ chunk: string; shou
 
   html = injectScripts(html);
 
-  const stream = ReactDOMServer.renderToStaticNodeStream(<App text="ssr" />);
+  const stream = ReactDOMServer.renderToStaticNodeStream(<App text="Hello World (hydrated)" />);
   const [start, end, openDiv] = [...html.split('<div id="root">'), '<div id="root" data-ssr>'];
 
   yield { chunk: start, shouldFlush: false };

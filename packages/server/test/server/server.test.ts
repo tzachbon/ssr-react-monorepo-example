@@ -12,8 +12,13 @@ describe('Server', () => {
   }).beforeAndAfter({ after, afterEach, before });
 
   it('should render server project', async () => {
-    const { page } = await runner.openPage(runner.baseUrl());
+    const { page, responses } = await runner.openPage(runner.baseUrl(), { captureResponses: true });
+    const firstResponseBody = (await responses[0]?.body())?.toString();
 
+    // Initial HTML
+    expect(firstResponseBody).toContain('<div id="root" data-ssr><h1>Hello World (hydrated)</h1></div>');
+
+    // After hydration
     expect(await page.locator('h1').innerText()).toEqual('Hello World (hydrated)');
   });
 });
