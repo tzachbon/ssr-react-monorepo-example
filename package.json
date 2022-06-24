@@ -7,9 +7,12 @@
   ],
   "scripts": {
     "clean": "rimraf ./packages/*/dist",
+    "build": "turbo run build",
     "build:all": "tsc --build",
-    "lint": "eslint .",
-    "test": "mocha \"packages/**/dist/test/**/*.test.js\" --parallel"
+    "lint": "turbo run lint",
+    "lint:all": "eslint .",
+    "test": "turbo run test",
+    "test:all": "mocha \"packages/**/dist/test/**/*.test.js\" --parallel"
   },
   "keywords": [
     "ssr",

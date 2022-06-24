@@ -3,25 +3,38 @@
   "baseBranch": "origin/master",
   "pipeline": {
     "//#build:all": {
-      "outputs": ["dist/**"]
+      "inputs": ["**/*.ts", "**/*.tsx"]
     },
     "build": {
-      "dependsOn": ["//#build:all", "^build"],
-      "outputs": ["dist/**"]
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["//#build:all", "^build"]
     },
     "dev": {
-      "dependsOn": ["//#build", "^dev"],
-      "outputs": ["dist/**"]
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["build", "^dev"]
     },
-    "//#test": {
-      "dependsOn": ["build", "^test"],
+    "//#test:all": {
+      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "dependsOn": ["//#test:all", "^test"],
       "outputs": []
     },
-    "//#lint": {
+    "//#lint:all": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "lint": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["//#lint:all", "^lint"],
       "outputs": []
     },
     "//#clean": {
-      "outputs": ["dist/**"]
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "outputs": ["**/dist/**"]
     }
   }
 }
