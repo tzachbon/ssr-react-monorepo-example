@@ -14,7 +14,7 @@ export function createUserController() {
 export function createUserRoutes(router: Router) {
   const controller = createUserController();
 
-  router.get('/user', (req, res) => {
+  router.get('/user', (_req, res) => {
     res.json(controller.getUser());
   });
 }

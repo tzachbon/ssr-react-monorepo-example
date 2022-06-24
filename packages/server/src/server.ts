@@ -20,5 +20,6 @@ function expose(app: Express) {
 
   createScripts(app);
   createRestAPI(app);
-  createAppRenderer(app);
+
+  return createAppRenderer(app);
 }
