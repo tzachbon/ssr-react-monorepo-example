@@ -23,10 +23,10 @@
   ],
   "scripts": {
     "build": "npm run bundle:prod",
-    "bundle:prod": "cross-env NODE_ENV=production webpack --config webpack.config.cjs",
-    "bundle:dev": "cross-env NODE_ENV=development webpack --devtool source-map --config webpack.config.cjs",
-    "dev:client": "cross-env NODE_ENV=development webpack serve --open --config webpack.config.cjs",
-    "dev:bundle": "cross-env NODE_ENV=development webpack --config webpack.config.cjs --watch",
+    "bundle:prod": "cross-env NODE_ENV=production webpack",
+    "bundle:dev": "cross-env NODE_ENV=development webpack --devtool source-map",
+    "dev:client": "cross-env NODE_ENV=development webpack serve --open",
+    "dev:bundle": "cross-env NODE_ENV=development webpack --watch",
     "dev": "run-p dev:* -l",
     "prepack": "npx tsc && npm run build"
   },

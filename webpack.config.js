@@ -1,6 +1,6 @@
 // @ts-check
 /** @type import('webpack').Configuration */
-module.exports = {
+export default {
   devtool: 'source-map',
   module: {
     rules: [

@@ -1,14 +1,22 @@
 // @ts-check
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const rootWebpackConfig = require('../../webpack.config.cjs');
-const packageJSON = require('./package.json');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import rootWebpackConfig from '../../webpack.config.js';
+import packageJSON from './package.json' assert { type: 'json' };
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
 
-const mode = process.env.NODE_ENV || 'development';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const require = createRequire(import.meta.url);
+
+/** @type {import('webpack').Configuration['mode']} */
+const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
 /** @type {import('webpack').Configuration} */
-module.exports = {
+export default {
   ...rootWebpackConfig,
   mode,
   entry: {
