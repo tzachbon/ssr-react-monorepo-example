@@ -3,33 +3,33 @@
   "baseBranch": "origin/master",
   "pipeline": {
     "//#build:all": {
-      "inputs": ["**/*.ts", "**/*.tsx"]
+      "inputs": ["**/*.ts", "**/*.tsx", "**/tsconfig*", "tsconfig*"]
     },
     "build": {
-      "inputs": ["**/*.ts", "**/*.tsx"],
+      "inputs": ["**/*.ts", "**/*.tsx", "**/webpack.config.*"],
       "dependsOn": ["//#build:all", "^build"]
     },
     "//#dev:all": {
       "outputs": ["**/dist/**"],
-      "inputs": ["**/*.ts", "**/*.tsx"],
+      "inputs": ["**/*.ts", "**/*.tsx", "**/tsconfig*", "tsconfig*"],
       "dependsOn": []
     },
     "dev": {
       "outputs": ["**/dist/**"],
-      "inputs": ["**/*.ts", "**/*.tsx"],
+      "inputs": ["**/*.ts", "**/*.tsx", "**/webpack.config.*"],
       "dependsOn": ["build", "^dev"]
     },
     "//#test:all": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.js"],
       "dependsOn": ["build"]
     },
     "test": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.js"],
       "dependsOn": ["//#test:all", "^test"],
       "outputs": []
     },
     "//#lint:all": {
-      "inputs": ["**/*.ts", "**/*.tsx"],
+      "inputs": ["**/*.ts", "**/*.tsx", ".eslintrc"],
       "dependsOn": ["build"],
       "outputs": []
     },
