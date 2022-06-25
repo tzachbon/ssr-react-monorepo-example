@@ -2,17 +2,27 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/umd/index.js",
-  "types": "dist/app/index.d.ts",
+  "type": "module",
+  "module": "./dist/umd/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/umd/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./html": {
+      "import": "./dist/umd/index.html"
+    }
+  },
   "files": [
     "dist/app",
     "dist/umd"
   ],
   "scripts": {
     "build": "npm run bundle:prod",
-    "bundle:prod": "webpack --mode production",
-    "bundle:dev": "webpack --mode development --devtool source-map",
-    "dev": "webpack serve --mode development --open",
+    "bundle:prod": "webpack --mode production --config webpack.config.cjs",
+    "bundle:dev": "webpack --mode development --devtool source-map --config webpack.config.cjs",
+    "dev": "webpack serve --mode development --open --config webpack.config.cjs",
     "prepack": "npx tsc && npm run build"
   },
   "keywords": [],

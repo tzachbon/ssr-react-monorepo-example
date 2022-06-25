@@ -2,7 +2,7 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const rootWebpackConfig = require('../../webpack.config');
+const rootWebpackConfig = require('../../webpack.config.cjs');
 const packageJSON = require('./package.json');
 
 /** @type {(webpack: import('webpack').Configuration) => import('webpack').Configuration} */

@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import type { Request, Response } from 'express';
 import { on } from 'events';
-import { appRootPath } from './consts';
+import { appRootPath } from './consts.js';
 
 export function createAppRenderer(app: Express) {
   /**
