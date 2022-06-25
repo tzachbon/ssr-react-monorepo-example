@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "clean": "rimraf ./packages/*/dist",
-    "dev": "turbo run dev //#watch:all --parallel",
-    "watch:all": "npm run build:all -- --watch --preserveWatchOutput",
+    "dev": "turbo run dev //#dev:all --parallel",
+    "dev:all": "npm run build:all -- --watch --preserveWatchOutput",
     "build": "turbo run build",
     "build:all": "tsc --build",
     "lint": "turbo run lint",
