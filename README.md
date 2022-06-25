@@ -13,13 +13,21 @@ This repo is trying to demonstrate how to implement server side rendering with R
 npm install
 ```
 
+> We look for a seamless development that will react according to your changes, here's the command that you should run at the **root of the project**
+
+
+## Build
+
 ```bash
-npm run build:all
+npm run build
 ```
 
-## Development, building and testing
+## Development
 
-We look for a seamless development that will react according to your changes, here's the command that you should run at the **root of the project**
+```bash
+npm run dev
+```
+
 
 ### Testing
 
@@ -35,29 +43,12 @@ In order to test the monorepo you have 2 options:
 Main client application (React).
 
 * `dev` - Run watcher for typescript files and initialize Webpack dev server for the client code.
-
-```bash
-npm run dev:app
-```
-
 * `build` - Build the types and the client bundle.
 
-```bash
-npm run build:app
-```
 
 #### Server
 
 The server application (express).
 
 * `dev` - Run watcher for typescript files and the client bundle.
-
-```bash
-npm run dev:server
-```
-
 * `build` - Build the types and the client bundle.
-
-```bash
-npm run build:server
-```

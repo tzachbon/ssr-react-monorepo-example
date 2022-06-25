@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/master",
+  "pipeline": {
+    "//#build:all": {
+      "inputs": ["**/*.ts", "**/*.tsx"]
+    },
+    "build": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["//#build:all", "^build"]
+    },
+    "//#dev:all": {
+      "outputs": ["**/dist/**"],
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": []
+    },
+    "dev": {
+      "outputs": ["**/dist/**"],
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["^dev"]
+    },
+    "//#test:all": {
+      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "inputs": ["**/*.test.ts", "**/*.test.tsx"],
+      "dependsOn": ["//#test:all", "^test"],
+      "outputs": []
+    },
+    "//#lint:all": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "lint": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": ["//#lint:all", "^lint"],
+      "outputs": []
+    },
+    "//#clean": {
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "outputs": ["**/dist/**"]
+    }
+  }
+}
