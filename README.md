@@ -13,13 +13,21 @@ This repo is trying to demonstrate how to implement server side rendering with R
 npm install
 ```
 
+> We look for a seamless development that will react according to your changes, here's the command that you should run at the **root of the project**
+
+
+## Build
+
 ```bash
-npm run build:all
+npm run build
 ```
 
-## Development, building and testing
+## Development
 
-We look for a seamless development that will react according to your changes, here's the command that you should run at the **root of the project**
+```bash
+npm run dev
+```
+
 
 ### Testing
 
