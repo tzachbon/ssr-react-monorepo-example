@@ -6,7 +6,9 @@
   "types": "dist/server/index.d.ts",
   "scripts": {
     "start": "node --enable-source-maps dist/server/index.js",
-    "dev": "ENV=development nodemon --enable-source-maps ./dist/server/index.js --watch dist/server"
+    "watch": "ENV=development nodemon --enable-source-maps ./dist/server/index.js --watch dist/server",
+    "open": "ts-node -P ./src/tsconfig.json scripts/open-localhost.ts",
+    "dev": "npm run open && npm run watch"
   },
   "keywords": [],
   "author": "",

@@ -10,12 +10,18 @@
       "dependsOn": ["//#build:all", "^build"]
     },
     "dev": {
+      "outputs": ["**/dist/**"],
       "inputs": ["**/*.ts", "**/*.tsx"],
-      "dependsOn": ["build", "^dev"]
+      "dependsOn": ["^dev"]
     },
     "//#test:all": {
       "inputs": ["**/*.test.ts", "**/*.test.tsx"],
       "dependsOn": ["build"]
+    },
+    "//#watch:all": {
+      "outputs": ["**/dist/**"],
+      "inputs": ["**/*.ts", "**/*.tsx"],
+      "dependsOn": []
     },
     "test": {
       "inputs": ["**/*.test.ts", "**/*.test.tsx"],
