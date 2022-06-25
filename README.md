@@ -4,6 +4,19 @@ This repo is trying to demonstrate how to implement server side rendering with R
 
 > It's still a WIP.
 
+## Stack
+
+* Package Manager: [npm](https://www.npmjs.com/)
+* Worksapce Manager: [npm (v8)](https://docs.npmjs.com/cli/v8/using-npm/workspaces)
+* Script runner: [Turborepo](https://turborepo.org/)
+* Language: [Typescript](https://www.typescriptlang.org/) (Output to [`esm`](https://nodejs.org/api/esm.html))
+* Bundler: [Webpack](https://webpack.js.org/)
+* Test Runner: [Mocha](https://mochajs.org/)
+* Assertion Library: [Expect](https://www.npmjs.com/package/expect)
+* Web testing and Automation: [Playwright](https://playwright.dev/)
+* Linter: [ESLint](https://eslint.org/)
+* CI: [Github Actions](https://github.com/features/actions)
+
 
 ## Installation
 
