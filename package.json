@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "rimraf ./packages/*/dist **/.turbo",
+    "clean": "rimraf ./packages/*/dist **/.turbo, **/.cache",
     "dev": "turbo run dev //#dev:all --parallel",
     "dev:all": "npm run build:all -- --watch --preserveWatchOutput",
     "build": "turbo run build",

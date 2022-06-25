@@ -8,24 +8,24 @@
   "exports": {
     ".": {
       "import": "./dist/app/index.js",
-      "require": "./dist/umd/index.js",
+      "require": "./dist/web/index.js",
       "types": "./dist/app/index.d.ts"
     },
     "./html": {
-      "import": "./dist/umd/index.html",
-      "require": "./dist/umd/index.html"
+      "import": "./dist/web/index.html",
+      "require": "./dist/web/index.html"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "dist/app",
-    "dist/umd"
+    "dist/web"
   ],
   "scripts": {
     "build": "npm run bundle:prod",
-    "bundle:prod": "webpack --mode production --config webpack.config.cjs",
-    "bundle:dev": "webpack --mode development --devtool source-map --config webpack.config.cjs",
-    "dev": "webpack serve --mode development --open --config webpack.config.cjs",
+    "bundle:prod": "NODE_ENV=production webpack --config webpack.config.cjs",
+    "bundle:dev": "NODE_ENV=development webpack --devtool source-map --config webpack.config.cjs",
+    "dev": "NODE_ENV=development webpack serve --open --config webpack.config.cjs",
     "prepack": "npx tsc && npm run build"
   },
   "keywords": [],

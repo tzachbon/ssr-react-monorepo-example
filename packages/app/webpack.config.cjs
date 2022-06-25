@@ -5,36 +5,36 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rootWebpackConfig = require('../../webpack.config.cjs');
 const packageJSON = require('./package.json');
 
-/** @type {(webpack: import('webpack').Configuration) => import('webpack').Configuration} */
-module.exports = (w) => ({
+const mode = process.env.NODE_ENV || 'development';
+
+/** @type {import('webpack').Configuration} */
+module.exports = {
   ...rootWebpackConfig,
+  mode,
   entry: {
     client: require.resolve('./src/client.tsx'),
     index: require.resolve('./src/index.tsx'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist/umd'),
-    libraryTarget: 'umd',
+    path: path.resolve(__dirname, 'dist/web'),
     globalObject: 'globalThis',
   },
-  externals: {
-    react: {
-      amd: 'react',
-      commonjs: 'react',
-      commonjs2: 'react',
-      root: 'React',
+  externals: [
+    {
+      react: 'React',
+      'react-dom': 'ReactDOM',
     },
-    'react-dom': {
-      amd: 'react-dom',
-      commonjs: 'react-dom',
-      commonjs2: 'react-dom',
-      root: 'ReactDOM',
+  ],
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
     },
   },
   plugins: [
     ...(rootWebpackConfig.plugins ?? []),
     new HtmlWebpackPlugin({
-      cache: w.mode === 'production',
+      cache: mode === 'production',
       template: require.resolve('./src/html.ejs'),
       hash: true,
       excludeChunks: ['index'],
@@ -45,7 +45,8 @@ module.exports = (w) => ({
         dependencies: {
           ...packageJSON.dependencies,
         },
+        reactEnvMode: mode === 'development' ? 'development' : 'production.min',
       },
     }),
   ],
-});
+};
