@@ -12,8 +12,8 @@ module.exports = {
   ...rootWebpackConfig,
   mode,
   entry: {
-    client: require.resolve('./src/client.tsx'),
-    index: require.resolve('./src/index.tsx'),
+    client: require.resolve('./dist/app/client.js'),
+    index: require.resolve('./dist/app/index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist/web'),

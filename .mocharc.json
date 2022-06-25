@@ -2,6 +2,5 @@
   "colors": true,
   "'enable-source-maps'": true,
   "timeout": 10000,
-  "experimental-specifier-resolution": "node",
   "require": "e2e-test-kit/setup-server"
 }
