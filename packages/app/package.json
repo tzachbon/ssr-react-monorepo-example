@@ -23,9 +23,9 @@
   ],
   "scripts": {
     "build": "npm run bundle:prod",
-    "bundle:prod": "NODE_ENV=production webpack --config webpack.config.cjs",
-    "bundle:dev": "NODE_ENV=development webpack --devtool source-map --config webpack.config.cjs",
-    "dev": "NODE_ENV=development webpack serve --open --config webpack.config.cjs",
+    "bundle:prod": "cross-env NODE_ENV=production webpack --config webpack.config.cjs",
+    "bundle:dev": "cross-env NODE_ENV=development webpack --devtool source-map --config webpack.config.cjs",
+    "dev": "cross-env NODE_ENV=development webpack serve --open --config webpack.config.cjs",
     "prepack": "npx tsc && npm run build"
   },
   "keywords": [],
