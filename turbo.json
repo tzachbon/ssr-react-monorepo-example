@@ -20,11 +20,11 @@
       "dependsOn": ["build", "^dev"]
     },
     "//#test:all": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.js"],
+      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.json"],
       "dependsOn": ["build"]
     },
     "test": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.js"],
+      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.json"],
       "dependsOn": ["//#test:all", "^test"],
       "outputs": []
     },

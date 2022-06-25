@@ -1,5 +1,8 @@
 import { fork, spawn } from 'child_process';
-import { getPortFromChildProcess } from './helper';
+import { getPortFromChildProcess } from './helper.js';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 export async function serve(directory: string, preferredPort = 8080) {
   const args = [require.resolve('e2e-test-kit/static-serve-server'), directory, preferredPort.toString()];

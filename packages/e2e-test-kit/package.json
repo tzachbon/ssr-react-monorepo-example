@@ -3,13 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./setup-server": {
+      "default": "./dist/mocha-start-server.js",
+      "types": "./dist/mocha-start-server.d.ts"
+    },
+    "./static-serve-server": {
+      "default": "./dist/static-serve-server.js",
+      "types": "./dist/static-serve-server.d.ts"
+    }
+  },
   "files": [
     "dist",
-    "!dist/test",
-    "setup-server.js",
-    "static-serve-server.js"
+    "!dist/test"
   ],
   "scripts": {},
   "keywords": [],
@@ -19,7 +32,7 @@
     "@file-services/node": "^6.0.0",
     "@file-services/types": "^6.0.0",
     "@types/find-cache-dir": "^3.2.1",
-    "ensure-port": "^1.1.0",
+    "ensure-port": "^1.2.1",
     "find-cache-dir": "^3.3.2"
   }
 }
