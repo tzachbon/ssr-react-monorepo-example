@@ -6,9 +6,9 @@
   "main": "dist/server/index.js",
   "types": "dist/server/index.d.ts",
   "scripts": {
-    "start": "node --enable-source-maps dist/server/index.js",
-    "watch": "ENV=development nodemon --enable-source-maps ./dist/server/index.js --watch dist/server",
-    "open": "node --enable-source-maps scripts/open-localhost.js",
+    "start": "node --enable-source-maps --experimental-specifier-resolution=node dist/server/index.js",
+    "watch": "ENV=development nodemon --enable-source-maps --experimental-specifier-resolution=node -r ts-node/register ./dist/server/index.js --watch dist/server",
+    "open": "node --enable-source-maps --experimental-specifier-resolution=node scripts/open-localhost.js",
     "dev": "npm run open && npm run watch"
   },
   "keywords": [],

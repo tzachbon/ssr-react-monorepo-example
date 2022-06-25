@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "module": "./dist/umd/index.js",
-  "types": "./dist/types/index.d.ts",
+  "module": "./dist/app/index.js",
+  "types": "./dist/app/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/umd/index.js",
-      "types": "./dist/types/index.d.ts"
+      "import": "./dist/app/index.js",
+      "require": "./dist/umd/index.js",
+      "types": "./dist/app/index.d.ts"
     },
     "./html": {
-      "import": "./dist/umd/index.html"
-    }
+      "import": "./dist/umd/index.html",
+      "require": "./dist/umd/index.html"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist/app",

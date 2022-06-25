@@ -17,7 +17,7 @@
     "dev": {
       "outputs": ["**/dist/**"],
       "inputs": ["**/*.ts", "**/*.tsx"],
-      "dependsOn": ["^dev"]
+      "dependsOn": ["build", "^dev"]
     },
     "//#test:all": {
       "inputs": ["**/*.test.ts", "**/*.test.tsx"],
