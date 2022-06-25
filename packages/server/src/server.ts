@@ -1,9 +1,9 @@
 import express, { Express } from 'express';
 import compression from 'compression';
-import { createRestAPI } from './api';
-import { createScripts } from './scripts';
-import { createAppRenderer } from './render';
-import { appRootPath } from './consts';
+import { createRestAPI } from './api/index.js';
+import { createScripts } from './scripts.js';
+import { createAppRenderer } from './render.js';
+import { appRootPath } from './consts.js';
 
 export function createHttpServer() {
   const app = express();

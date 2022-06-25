@@ -2,17 +2,32 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/umd/index.js",
-  "types": "dist/app/index.d.ts",
+  "type": "module",
+  "module": "./dist/app/index.js",
+  "types": "./dist/app/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/app/index.js",
+      "require": "./dist/web/index.js",
+      "types": "./dist/app/index.d.ts"
+    },
+    "./html": {
+      "import": "./dist/web/index.html",
+      "require": "./dist/web/index.html"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist/app",
-    "dist/umd"
+    "dist/web"
   ],
   "scripts": {
     "build": "npm run bundle:prod",
-    "bundle:prod": "webpack --mode production",
-    "bundle:dev": "webpack --mode development --devtool source-map",
-    "dev": "webpack serve --mode development --open",
+    "bundle:prod": "cross-env NODE_ENV=production webpack --config webpack.config.cjs",
+    "bundle:dev": "cross-env NODE_ENV=development webpack --devtool source-map --config webpack.config.cjs",
+    "dev:client": "cross-env NODE_ENV=development webpack serve --open --config webpack.config.cjs",
+    "dev:bundle": "cross-env NODE_ENV=development webpack --config webpack.config.cjs --watch",
+    "dev": "run-p dev:* -l",
     "prepack": "npx tsc && npm run build"
   },
   "keywords": [],

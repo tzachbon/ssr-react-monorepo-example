@@ -2,12 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "dist/server/index.js",
   "types": "dist/server/index.d.ts",
   "scripts": {
     "start": "node --enable-source-maps dist/server/index.js",
     "watch": "ENV=development nodemon --enable-source-maps ./dist/server/index.js --watch dist/server",
-    "open": "ts-node -P ./src/tsconfig.json scripts/open-localhost.ts",
+    "open": "node --enable-source-maps scripts/open-localhost.js",
     "dev": "npm run open && npm run watch"
   },
   "keywords": [],

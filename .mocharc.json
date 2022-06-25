@@ -1,0 +1,6 @@
+{
+  "colors": true,
+  "enable-source-maps": true,
+  "timeout": 10000,
+  "require": "e2e-test-kit/setup-server"
+}

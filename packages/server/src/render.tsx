@@ -1,22 +1,20 @@
 import ReactDOMServer from 'react-dom/server';
-import type { Express } from 'express';
 import { App } from 'app';
-import fs from 'fs';
-import path from 'path';
-import type { Request, Response } from 'express';
 import { on } from 'events';
-import { appRootPath } from './consts';
+import type { Express, Request, Response } from 'express';
+import fs from 'fs';
+import { htmlPath } from './consts.js';
 
 export function createAppRenderer(app: Express) {
   /**
    * Expose the rendered App from any path that is not resolved (as SPA application).
    */
   app.get('*', (req, res) => {
-    void render(appRootPath, req, res);
+    void render(req, res);
   });
 }
 
-async function render(appRootPath: string, _request: Request, response: Response) {
+async function render(_request: Request, response: Response) {
   try {
     response.writeHead(200, {
       'Content-Type': 'text/html',
@@ -24,7 +22,7 @@ async function render(appRootPath: string, _request: Request, response: Response
       'x-content-type-options': 'nosniff',
     });
 
-    const html = await fs.promises.readFile(path.join(appRootPath, 'index.html'), 'utf8');
+    const html = await fs.promises.readFile(htmlPath, 'utf8');
 
     for await (const { chunk, shouldFlush } of renderChunks(html)) {
       response.write(chunk);

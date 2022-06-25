@@ -6,7 +6,7 @@ import {
 } from 'mocha';
 import playwright, { LaunchOptions, type Browser } from 'playwright';
 import { Ports } from 'ensure-port';
-import { runService, serve } from './serve';
+import { runService, serve } from './serve.js';
 import type { IFileSystem } from '@file-services/types';
 import { nodeFs } from '@file-services/node';
 

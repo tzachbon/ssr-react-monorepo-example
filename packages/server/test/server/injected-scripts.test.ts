@@ -1,7 +1,10 @@
-import expect from 'expect';
+import { expect } from 'expect';
 import { ProjectRunner } from 'e2e-test-kit';
 import { dirname } from 'path';
 import { after, afterEach, before } from 'mocha';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 describe('Server Headers', () => {
   const { runner } = ProjectRunner.create({
@@ -16,12 +19,10 @@ describe('Server Headers', () => {
 
     const scripts = await page
       .locator('script')
-      .evaluateAll((scripts) =>
-        scripts
-          .map((script) => script.getAttribute('src'))
-          .filter((scriptSource) => scriptSource && !/^client.js/.test(scriptSource) /* Remove client side script */)
-      );
+      .evaluateAll((scripts) => scripts.map((script) => script.getAttribute('src')));
 
-    expect(scripts).toEqual(['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js']);
+    expect(scripts).toEqual(
+      expect.arrayContaining(['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js'])
+    );
   });
 });

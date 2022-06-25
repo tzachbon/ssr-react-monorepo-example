@@ -1,7 +1,10 @@
-import expect from 'expect';
+import { expect } from 'expect';
 import { ProjectRunner } from 'e2e-test-kit';
 import { dirname } from 'path';
 import { after, afterEach, before } from 'mocha';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 describe('Server', () => {
   const { runner } = ProjectRunner.create({

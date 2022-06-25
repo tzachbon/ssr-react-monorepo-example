@@ -1,4 +1,4 @@
-import { createHttpServer } from './server';
+import { createHttpServer } from './server.js';
 import { createListeningHttpServer } from 'create-listening-server';
 
 const [preferredPort = 5050] = process.argv.slice(2);
