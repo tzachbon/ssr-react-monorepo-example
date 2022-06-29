@@ -1,45 +1,49 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "baseBranch": "origin/master",
+  "globalDependencies": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/tsconfig*",
+    "tsconfig*",
+    "**/webpack.config.*",
+    "./webpack.config.*"
+  ],
   "pipeline": {
     "//#build:all": {
-      "inputs": ["**/*.ts", "**/*.tsx", "**/tsconfig*", "tsconfig*"]
+      "inputs": []
     },
     "build": {
-      "inputs": ["**/*.ts", "**/*.tsx", "**/webpack.config.*"],
+      "inputs": ["**/webpack.config.*"],
       "dependsOn": ["//#build:all", "^build"]
     },
     "//#dev:all": {
       "outputs": ["**/dist/**"],
-      "inputs": ["**/*.ts", "**/*.tsx", "**/tsconfig*", "tsconfig*"],
       "dependsOn": []
     },
     "dev": {
       "outputs": ["**/dist/**"],
-      "inputs": ["**/*.ts", "**/*.tsx", "**/webpack.config.*"],
       "dependsOn": ["build", "^dev"]
     },
     "//#test:all": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.json"],
+      "inputs": [".mocharc.json"],
       "dependsOn": ["build"]
     },
     "test": {
-      "inputs": ["**/*.test.ts", "**/*.test.tsx", "**/tsconfig*", "tsconfig*", ".mocharc.json"],
+      "inputs": [".mocharc.json"],
       "dependsOn": ["//#test:all", "^test"],
       "outputs": []
     },
     "//#lint:all": {
-      "inputs": ["**/*.ts", "**/*.tsx", ".eslintrc"],
+      "inputs": [".eslintrc"],
       "dependsOn": ["build"],
       "outputs": []
     },
     "lint": {
-      "inputs": ["**/*.ts", "**/*.tsx"],
       "dependsOn": ["//#lint:all", "^lint"],
       "outputs": []
     },
     "//#clean": {
-      "inputs": ["**/*.ts", "**/*.tsx"],
       "outputs": ["**/dist/**"]
     }
   }
