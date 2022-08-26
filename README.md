@@ -65,3 +65,17 @@ The server application (express).
 
 * `dev` - Run watcher for typescript files and the client bundle.
 * `build` - Build the types and the client bundle.
+
+#### Upgrade Dependencies
+
+Once in a while you probably have to upgrade the dependencies.
+Run this commands:
+
+```bash
+npm run upgrade:dependencies
+rm package-lock.json
+rm -rf node_modules
+npm it
+```
+
+We added `pleb.config.mjs` to skip a specific dependencies we don't want to upgrade.
