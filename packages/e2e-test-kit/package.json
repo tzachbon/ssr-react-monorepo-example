@@ -32,7 +32,7 @@
     "@file-services/node": "^7.0.1",
     "@file-services/types": "^7.0.1",
     "@types/find-cache-dir": "^3.2.1",
-    "ensure-port": "^1.3.2",
+    "ensure-port": "^1.5.1",
     "find-cache-dir": "^3.3.2"
   }
 }
