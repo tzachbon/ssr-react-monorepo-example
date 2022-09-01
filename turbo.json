@@ -1,50 +1,74 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/master",
   "globalDependencies": [
     "**/*.ts",
     "**/*.tsx",
     "**/tsconfig*",
-    "tsconfig*",
-    "**/webpack.config.*",
-    "./webpack.config.*"
+    "tsconfig*"
   ],
   "pipeline": {
     "//#build:all": {
       "inputs": []
     },
     "build": {
-      "inputs": ["**/webpack.config.*"],
-      "dependsOn": ["//#build:all", "^build"]
+      "inputs": [
+        "**/webpack.config.*",
+        "./webpack.config.*"
+      ],
+      "dependsOn": [
+        "//#build:all",
+        "^build"
+      ]
     },
     "//#dev:all": {
-      "outputs": ["**/dist/**"],
+      "outputs": [
+        "**/dist/**"
+      ],
       "dependsOn": []
     },
     "dev": {
-      "outputs": ["**/dist/**"],
-      "dependsOn": ["build", "^dev"]
+      "outputs": [
+        "**/dist/**"
+      ],
+      "dependsOn": [
+        "build",
+        "^dev"
+      ]
     },
     "//#test:all": {
-      "inputs": [".mocharc.json"],
-      "dependsOn": ["build"]
+      "inputs": [
+        ".mocharc.json"
+      ],
+      "dependsOn": []
     },
     "test": {
-      "inputs": [".mocharc.json"],
-      "dependsOn": ["//#test:all", "^test"],
-      "outputs": []
+      "inputs": [
+        ".mocharc.json"
+      ],
+      "dependsOn": [
+        "build",
+        "^test"
+      ]
     },
     "//#lint:all": {
-      "inputs": [".eslintrc"],
-      "dependsOn": ["build"],
-      "outputs": []
+      "inputs": [
+        ".eslintrc"
+      ],
+      "dependsOn": []
     },
     "lint": {
-      "dependsOn": ["//#lint:all", "^lint"],
-      "outputs": []
+      "inputs": [
+        ".eslintrc"
+      ],
+      "dependsOn": [
+        "build",
+        "^lint"
+      ]
     },
     "//#clean": {
-      "outputs": ["**/dist/**"]
+      "outputs": [
+        "**/dist/**"
+      ]
     }
   }
 }
