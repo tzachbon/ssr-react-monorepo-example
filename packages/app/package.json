@@ -21,6 +21,10 @@
     "dist/app",
     "dist/web"
   ],
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
   "scripts": {
     "build": "npm run bundle:prod",
     "bundle:prod": "cross-env NODE_ENV=production webpack",
