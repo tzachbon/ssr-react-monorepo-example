@@ -1,6 +1,5 @@
 import ReactDOMServer from 'react-dom/server';
 import { App } from 'app';
-import { on } from 'events';
 import type { Express, Request, Response } from 'express';
 import fs from 'fs';
 import { htmlPath } from './consts.js';
@@ -22,16 +21,7 @@ async function render(_request: Request, response: Response) {
       'x-content-type-options': 'nosniff',
     });
 
-    const html = await fs.promises.readFile(htmlPath, 'utf8');
-
-    for await (const { chunk, shouldFlush } of renderChunks(html)) {
-      response.write(chunk);
-      if (shouldFlush) {
-        response.flush();
-      }
-    }
-
-    return response.end();
+    return renderChunks(response);
   } catch (error) {
     console.error(error);
     return response.status(500).send(error instanceof Error ? error.message : error);
@@ -57,30 +47,40 @@ function injectScripts(html: string) {
   return html;
 }
 
-async function* renderChunks(html: string): AsyncGenerator<{ chunk: string; shouldFlush: boolean }> {
-  const abortController = new AbortController();
+async function renderChunks(response: Response) {
+  const initialHtml = await fs.promises.readFile(htmlPath, 'utf8');
+  const html = injectScripts(initialHtml);
 
-  html = injectScripts(html);
+  let didError = false;
 
-  const stream = ReactDOMServer.renderToStaticNodeStream(<App text="Hello World (hydrated)" />);
-  const [start, end, openDiv] = [...html.split('<div id="root">'), '<div id="root" data-ssr>'];
+  const [start, _end, openDiv] = [...html.split('<div id="root">'), '<div id="root" data-ssr>'];
 
-  yield { chunk: start, shouldFlush: false };
-  yield { chunk: openDiv, shouldFlush: true };
+  const stream = ReactDOMServer.renderToPipeableStream(<App text="Hello World (hydrated)" />, {
+    onShellReady() {
+      response.statusCode = didError ? 500 : 200;
 
-  stream.on('end', () => {
-    abortController.abort('Finished rendering');
+      response.write(start);
+      response.write(openDiv);
+
+      stream.pipe(response);
+
+      // Missing closing part of the div tag.
+    },
+    onShellError(error) {
+      response.statusCode = 500;
+      response.send(
+        initialHtml.replace(
+          '</body>',
+          `<script>console.error('SSR Error - Fallback to client render', JSON.stringify('${String(
+            error
+          )}'))</script></body>`
+        )
+      );
+    },
+    onError(error) {
+      didError = true;
+      response.statusCode = 500;
+      console.error(error);
+    },
   });
-
-  try {
-    for await (const chunk of on(stream, 'data', { signal: abortController.signal })) {
-      yield { chunk: String(chunk), shouldFlush: false };
-    }
-  } catch (errorOrAbort) {
-    if (!abortController.signal.aborted) {
-      throw errorOrAbort; // It's an error.
-    }
-  }
-
-  yield { chunk: end, shouldFlush: true };
 }
